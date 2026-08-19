@@ -2,10 +2,11 @@
   "name": "yamura-realizacje",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node app.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "seed:dev": "node --env-file=.env.local scripts/seed-dev.mjs"
