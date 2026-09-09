@@ -9,7 +9,8 @@
     "start": "node app.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "seed:dev": "node --env-file=.env.local scripts/seed-dev.mjs"
+    "seed:dev": "node --env-file=.env.local scripts/seed-dev.mjs",
+    "seed:customer-demo": "node --env-file=.env.local scripts/create-customer-demo.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",

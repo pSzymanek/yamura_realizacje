@@ -1,9 +1,39 @@
 import { createServer } from "node:http";
+import { appendFileSync, mkdirSync } from "node:fs";
+import { join } from "node:path";
 import next from "next";
 
 const hostname = "0.0.0.0";
 const rawPort = process.env.PORT || process.env.NODE_PORT || "3000";
 const port = Number.parseInt(rawPort, 10);
+const logDirectory = join(process.cwd(), "logs");
+const logFile = join(logDirectory, "node-app.log");
+
+function formatError(error) {
+  if (error instanceof Error) {
+    return error.stack || error.message;
+  }
+
+  return String(error);
+}
+
+function logEvent(level, message, details) {
+  const suffix = details ? ` | ${formatError(details)}` : "";
+  const line = `${new Date().toISOString()} [${level}] ${message}${suffix}\n`;
+
+  try {
+    mkdirSync(logDirectory, { recursive: true });
+    appendFileSync(logFile, line, "utf8");
+  } catch (error) {
+    console.error("Nie udało się zapisać dziennika aplikacji:", error);
+  }
+
+  if (level === "ERROR") {
+    console.error(line.trim());
+  } else {
+    console.log(line.trim());
+  }
+}
 
 if (!Number.isInteger(port) || port < 1 || port > 65535) {
   console.error("Nieprawidłowy port aplikacji Node.js.");
@@ -18,9 +48,25 @@ async function start() {
   await app.prepare();
 
   const server = createServer(async (request, response) => {
+    if (request.method === "GET" && request.url === "/api/health") {
+      response.statusCode = 200;
+      response.setHeader("Content-Type", "application/json; charset=utf-8");
+      response.setHeader("Cache-Control", "no-store");
+      response.end(
+        JSON.stringify({
+          status: "ok",
+          uptimeSeconds: Math.floor(process.uptime()),
+          timestamp: new Date().toISOString(),
+        }),
+      );
+      return;
+    }
+
     try {
       await handle(request, response);
-    } catch {
+    } catch (error) {
+      logEvent("ERROR", `Nieobsłużony błąd żądania ${request.method || "UNKNOWN"}.`, error);
+
       if (!response.writableEnded) {
         if (!response.headersSent) {
           response.statusCode = 500;
@@ -32,24 +78,52 @@ async function start() {
   });
 
   server.on("error", (error) => {
-    console.error("Nie udało się uruchomić serwera:", error.message);
+    logEvent("ERROR", "Błąd serwera HTTP.", error);
     process.exit(1);
   });
 
   server.listen(port, hostname, () => {
-    console.log(`YAMURA Dziennik Realizacji działa na porcie ${port}.`);
+    logEvent(
+      "INFO",
+      `YAMURA Dziennik Realizacji uruchomiona: pid=${process.pid}, port=${port}, node=${process.version}.`,
+    );
   });
 
-  function shutdown() {
-    server.close(() => process.exit(0));
-    setTimeout(() => process.exit(1), 10_000).unref();
+  let shuttingDown = false;
+
+  function shutdown(signal) {
+    if (shuttingDown) {
+      return;
+    }
+
+    shuttingDown = true;
+    logEvent("WARN", `Otrzymano sygnał ${signal}. Rozpoczynam zatrzymanie.`);
+
+    server.close(() => {
+      logEvent("INFO", "Serwer HTTP został poprawnie zatrzymany.");
+      process.exit(0);
+    });
+
+    setTimeout(() => {
+      logEvent("ERROR", "Przekroczono czas bezpiecznego zatrzymania serwera.");
+      process.exit(1);
+    }, 10_000).unref();
   }
 
-  process.on("SIGTERM", shutdown);
-  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
+  process.on("SIGINT", () => shutdown("SIGINT"));
 }
 
+process.on("uncaughtException", (error) => {
+  logEvent("ERROR", "Nieobsłużony wyjątek procesu.", error);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (reason) => {
+  logEvent("ERROR", "Nieobsłużone odrzucenie Promise.", reason);
+});
+
 start().catch((error) => {
-  console.error("Nie udało się przygotować aplikacji:", error.message);
+  logEvent("ERROR", "Nie udało się przygotować aplikacji.", error);
   process.exit(1);
 });

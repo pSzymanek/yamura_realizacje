@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { ProgressTimeline } from "@/components/progress-timeline";
+import { StageCountdown } from "@/components/stage-countdown";
 import { StatusBadge } from "@/components/status-badge";
 import { UpdatesList } from "@/components/updates-list";
 import { getClientProject } from "@/lib/data";
@@ -27,7 +28,7 @@ export default async function ClientProjectPage({
   return (
     <main className="client-page">
       <header className="client-header">
-        <Image src="/brand/yamura-dark.png" alt="YAMURA" width={190} height={64} priority />
+        <Image src="/brand/yamura-dark.png" alt="YAMURA PRO" width={170} height={41} style={{ width: "170px", height: "auto" }} priority />
         <div className="client-header__project">
           <span>Realizacja {project.order_number}</span>
           <h1>{project.title}</h1>
@@ -39,6 +40,16 @@ export default async function ClientProjectPage({
           <span className="eyebrow">Aktualny stan</span>
           <StatusBadge status={project.status} />
         </div>
+
+        <div style={{ margin: "16px 0" }}>
+          <StageCountdown
+            targetDate={project.next_step_date}
+            status={project.status}
+            stageName={project.title}
+            variant="card"
+          />
+        </div>
+
         <div className="client-next-grid">
           <div>
             <span>Następny krok</span>
@@ -58,7 +69,6 @@ export default async function ClientProjectPage({
         <div className="client-section__heading">
           <span className="eyebrow">Przebieg realizacji</span>
           <h2>Kolejne etapy</h2>
-          <p>Zaznaczamy wyłącznie etapy odnotowane w dzienniku.</p>
         </div>
         <ProgressTimeline currentStatus={project.status} updates={project.updates} />
       </section>
@@ -72,7 +82,7 @@ export default async function ClientProjectPage({
       </section>
 
       <footer className="client-footer">
-        <Image src="/brand/yamura-dark.png" alt="YAMURA" width={120} height={40} />
+        <Image src="/brand/yamura-dark.png" alt="YAMURA PRO" width={110} height={26} style={{ width: "110px", height: "auto" }} />
         <p>Dziękujemy za zaufanie.</p>
       </footer>
     </main>

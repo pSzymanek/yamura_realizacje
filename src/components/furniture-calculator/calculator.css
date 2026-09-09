@@ -1,0 +1,515 @@
+
+/* Yamura Furniture Calculator Styles */
+.yamura-calc-wrapper {
+  --ink: #1a1714;
+  --ink-soft: #5a5146;
+  --bark: #8c8275;
+  --clay: #8b704f;
+  --clay-deep: #6f583e;
+  --espresso: #12100e;
+  --parchment: #faf7f2;
+  --parchment-deep: #f2eee8;
+  --line: #ded6cc;
+  --line-soft: #ece5dc;
+  --ok: #2f6b52;
+  --warn: #a13d2f;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  width: 100%;
+}
+
+.yamura-calc-card {
+  background: var(--parchment);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0 0 32px 0;
+  max-width: 980px;
+  margin: 0 auto;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+}
+
+.yamura-calc-body {
+  padding: 0 28px;
+}
+
+@media (max-width: 768px) {
+  .yamura-calc-body {
+    padding: 0 16px;
+  }
+}
+
+
+  
+
+  :root {
+    --ink: #2a231c;
+    --ink-soft: #5b5044;
+    --bark: #8a7c6b;
+    --clay: #a9714a;
+    --clay-deep: #8a5c3a;
+    --espresso: #1c1712;
+    --parchment: #faf6ef;
+    --parchment-deep: #f2ebdd;
+    --line: #e4dbca;
+    --line-soft: #eee7d8;
+    --ok: #3f6b4a;
+    --warn: #a13d2f;
+  }
+
+  
+  .yamura-calc-card {
+    background: var(--parchment);
+    border-radius: 18px;
+    padding: 0 0 32px 0;
+    max-width: 760px;
+    width: 100%;
+    box-shadow: 0 30px 70px rgba(15, 10, 5, 0.45), 0 2px 0 rgba(255,255,255,0.4) inset;
+  }
+  .card-
+  h1 {
+    font-size: 21px;
+    margin: 0 0 4px 0;
+    color: var(--ink);
+  }
+  .brand-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+    padding: 34px 32px 24px 32px;
+    border-radius: 18px 18px 0 0;
+    background:
+      radial-gradient(480px 220px at 50% -60%, rgba(255,255,255,0.10), transparent 70%),
+      linear-gradient(150deg, var(--espresso) 0%, var(--clay-deep) 85%, var(--clay) 100%);
+  }
+  .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 33px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    color: #fff;
+    margin: 0;
+  }
+  .brand-rule {
+    width: 34px;
+    height: 1px;
+    background: rgba(255,255,255,0.45);
+    margin: 8px 0 9px 0;
+  }
+  .brand-domain {
+    font-size: 12.5px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.82);
+    letter-spacing: 0.06em;
+  }
+  .brand-tag {
+    font-size: 10.5px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.14em;
+    margin-top: 3px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 20px;
+    margin-bottom: 6px;
+    line-height: 1.55;
+  }
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    margin-top: 22px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 6px;
+  }
+  label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    margin-top: 12px;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    background: #fff;
+    color: var(--ink);
+  }
+  input:focus, select:focus {
+    border-color: var(--clay);
+    box-shadow: 0 0 0 3px rgba(169, 113, 74, 0.15);
+  }
+  .row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+  }
+  .row > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .row label {
+    min-height: 32px;
+    display: flex;
+    align-items: flex-end;
+  }
+  .hint {
+    font-size: 11px;
+    color: var(--bark);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .mini-box-static {
+    background: #fff;
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 11px 13px;
+    margin-top: 10px;
+  }
+  .mini-box-static .mini-label {
+    color: var(--bark);
+    font-size: 11px;
+  }
+  .mini-box-static .mini-value {
+    color: var(--ink);
+    font-size: 17px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Tabele (formatki, akcesoria, AGD, inne) */
+  .acc-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 12.5px;
+  }
+  .acc-table th {
+    text-align: left;
+    font-size: 10.5px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink-soft);
+    font-weight: 700;
+    padding: 4px 5px 8px 5px;
+    border-bottom: 1.5px solid var(--line);
+    line-height: 1.3;
+    white-space: normal;
+  }
+  .acc-table td {
+    padding: 5px 6px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .acc-table input {
+    padding: 6px 8px;
+    font-size: 13px;
+  }
+  .acc-name { width: 13%; }
+  .acc-name input { text-overflow: ellipsis; }
+  .acc-qty { width: 6%; }
+  .acc-dim { width: 11%; text-align: center; padding: 4px 2px; }
+  .acc-dim input {
+    font-size: 13px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 2px;
+  }
+  .acc-qty-main { width: 11%; text-align: center; padding: 4px 2px; }
+  .acc-qty-main input {
+    font-size: 13px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 2px;
+  }
+  .acc-price { width: 20%; }
+  .acc-edgetype { width: 10%; }
+  .acc-material { width: 11%; }
+  .acc-double { width: 6%; text-align: center; }
+  .acc-double input[type="checkbox"] { width: auto; margin: 0; accent-color: var(--clay); }
+  .acc-sum { width: 9%; text-align: right; font-weight: 600; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .acc-remove {
+    width: 4%;
+    text-align: center;
+    cursor: pointer;
+    color: var(--warn);
+    font-weight: 700;
+    font-size: 16px;
+    user-select: none;
+  }
+  .add-row-btn {
+    margin-top: 10px;
+    padding: 9px 14px;
+    background: transparent;
+    border: 1.5px dashed #c9a480;
+    border-radius: 9px;
+    color: var(--clay-deep);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .add-row-btn:hover {
+    background: var(--parchment-deep);
+    border-color: var(--clay);
+  }
+
+  /* Przyciski akcji (zapis, wgraj plik, PDF) */
+  .btn-primary, .btn-outline {
+    width: 100%;
+    padding: 12px 8px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.15s, background 0.15s, transform 0.05s;
+  }
+  .btn-primary {
+    background: linear-gradient(150deg, var(--espresso) 0%, var(--clay-deep) 85%, var(--clay) 100%);
+    color: #fff;
+    border: none;
+  }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-primary:active { transform: translateY(1px); }
+  .btn-outline {
+    background: #fff;
+    border: 1.5px solid var(--clay);
+    color: var(--clay-deep);
+  }
+  .btn-outline:hover { background: var(--parchment-deep); }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .btn-row .btn-primary { flex: 1; }
+
+  .result {
+    margin-top: 24px;
+    padding: 22px 22px 18px 22px;
+    background: linear-gradient(150deg, var(--espresso) 0%, var(--clay-deep) 85%, var(--clay) 100%);
+    border-radius: 14px;
+    color: #fff;
+  }
+  .result-label {
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    opacity: 0.75;
+    margin-bottom: 6px;
+  }
+  .result-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .result-brutto {
+    font-size: 13.5px;
+    opacity: 0.9;
+    margin-bottom: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .result-brutto b { font-weight: 700; }
+  .result-sub {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-bottom: 6px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+  }
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    font-variant-numeric: tabular-nums;
+  }
+  .breakdown-row:last-child {
+    border-bottom: none;
+  }
+  .breakdown-total {
+    border-top: 1px solid rgba(255,255,255,0.4);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 600;
+    padding-top: 12px;
+    margin-top: 4px;
+  }
+  .breakdown-total-brutto {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    opacity: 0.82;
+    padding-top: 0;
+  }
+  .note {
+    margin-top: 18px;
+    font-size: 11px;
+    color: var(--bark);
+    line-height: 1.6;
+  }
+
+  /* Akordeon sekcji */
+  .acc {
+    border: 1px solid var(--line);
+    border-left: 3px solid transparent;
+    border-radius: 12px;
+    margin-top: 14px;
+    overflow: hidden;
+    background: #fff;
+    transition: border-left-color 0.15s;
+  }
+  .acc > summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 15px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--parchment);
+    user-select: none;
+  }
+  .acc > summary::-webkit-details-marker { display: none; }
+  .acc > summary:hover { background: var(--parchment-deep); }
+  .acc-num {
+    flex: none;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--bark);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .acc[open] > summary .acc-num { background: var(--clay); border-color: var(--clay); color: #fff; }
+  .acc-icon { flex: none; font-size: 14px; line-height: 1; opacity: 0.85; }
+  .acc-title { flex: 1; }
+  .acc-sub {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--bark);
+    margin-top: 1px;
+  }
+  .acc-badge {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--clay-deep);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .acc-chevron {
+    flex: none;
+    color: var(--bark);
+    transition: transform 0.15s;
+    font-size: 11px;
+  }
+  .acc[open] > summary .acc-chevron { transform: rotate(180deg); }
+  .acc[open] > summary { background: var(--parchment-deep); }
+  .acc.acc-filled { border-left-color: var(--clay); }
+  .acc-
+  .acc-body > .section-label:first-child { display: none; }
+  .acc-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+  .acc-toolbar button {
+    background: none;
+    border: none;
+    color: var(--clay-deep);
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .acc-toolbar button:hover { text-decoration: underline; }
+
+  /* Sticky pasek z bieżącą ceną */
+  .sticky-total {
+    position: sticky;
+    bottom: 12px;
+    z-index: 20;
+    margin-top: 20px;
+    padding: 11px 16px;
+    background: linear-gradient(150deg, var(--espresso) 0%, var(--clay-deep) 85%, var(--clay) 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(28, 23, 18, 0.45);
+  }
+  .sticky-total-label {
+    font-size: 10.5px;
+    opacity: 0.8;
+    letter-spacing: 0.03em;
+  }
+  .sticky-total-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .sticky-total-brutto {
+    font-size: 11px;
+    opacity: 0.75;
+    margin-top: -2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .sticky-total-btn {
+    padding: 9px 14px;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .sticky-total-btn:hover { background: rgba(255,255,255,0.24); }
+
+  @keyframes pricePulse {
+    0% { transform: scale(1); }
+    35% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+  }
+  .price-pulse { animation: pricePulse 0.3s ease; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .price-pulse { animation: none; }
+    * { scroll-behavior: auto !important; }
+  }
+
+

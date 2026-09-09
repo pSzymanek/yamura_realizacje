@@ -5,7 +5,7 @@ import { useActionState, useEffect, useRef } from "react";
 import { FormMessage } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { publishUpdateAction } from "@/lib/actions";
-import { PROJECT_STATUSES } from "@/lib/statuses";
+import { CORE_STAGES, getNormalizedStage, PROJECT_STATUSES } from "@/lib/statuses";
 import type { ProjectDetails } from "@/lib/types";
 import { INITIAL_ACTION_STATE } from "@/lib/types";
 
@@ -23,19 +23,47 @@ export function UpdateForm({ project }: { project: ProjectDetails }) {
       <div className="section-heading section-heading--compact">
         <div>
           <span className="eyebrow">Dziennik</span>
-          <h2>Nowa aktualizacja</h2>
+          <h2>Nowy podetap / aktualizacja</h2>
         </div>
       </div>
+
+      <div className="form-grid">
+        <div className="field">
+          <label htmlFor="updateStage">Główny etap realizacji</label>
+          <select
+            id="updateStage"
+            name="stage"
+            defaultValue={getNormalizedStage(project.status) || "design"}
+          >
+            {CORE_STAGES.map((st) => (
+              <option key={st.id} value={st.id}>
+                {st.code}. {st.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
+          <label htmlFor="eventDate">Data podetapu / zdarzenia</label>
+          <input
+            id="eventDate"
+            name="eventDate"
+            type="date"
+            defaultValue={new Date().toISOString().slice(0, 10)}
+          />
+        </div>
+      </div>
+
       <div className="field">
-        <label htmlFor="updateTitle">Tytuł</label>
-        <input id="updateTitle" name="title" maxLength={160} required />
+        <label htmlFor="updateTitle">Tytuł podetapu</label>
+        <input id="updateTitle" name="title" placeholder="np. Pomiar laserowy 3D, Próbny montaż frontów…" maxLength={160} required />
       </div>
       <div className="field">
-        <label htmlFor="updateDescription">Opis</label>
+        <label htmlFor="updateDescription">Komentarz / opis prac</label>
         <textarea
           id="updateDescription"
           name="description"
-          rows={6}
+          rows={5}
+          placeholder="Szczegółowy opis wykonanych prac, uwagi stolarskie, uzgodnienia z inwestorem…"
           maxLength={5000}
           required
         />

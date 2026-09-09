@@ -13,7 +13,7 @@ export function LoginForm() {
   return (
     <form action={action} className="stack stack--large">
       <div className="field">
-        <label htmlFor="email">Email służbowy</label>
+        <label htmlFor="email">Adres e-mail</label>
         <input id="email" name="email" type="email" autoComplete="email" required />
       </div>
       <div className="field">
