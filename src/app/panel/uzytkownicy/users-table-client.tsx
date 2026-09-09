@@ -1,11 +1,8 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import { DemoAdminCustomer } from "@/lib/types";
 import { formatDate } from "@/lib/format";
 import { CopyInviteButton } from "./copy-invite-button";
-import { EditCustomerModal, SimpleProject } from "./edit-customer-modal";
+import { SimpleProject } from "./edit-customer-modal";
 
 const statusLabels = { active: "Aktywne", invited: "Zaproszone", inactive: "Nieaktywne" } as const;
 
@@ -18,7 +15,6 @@ export function UsersTableClient({
   allProjects: SimpleProject[];
   appUrl: string;
 }) {
-  const [editingCustomer, setEditingCustomer] = useState<DemoAdminCustomer | null>(null);
 
   return (
     <>
@@ -93,14 +89,13 @@ export function UsersTableClient({
                       >
                         Projekty
                       </Link>
-                      <button
-                        type="button"
-                        onClick={() => setEditingCustomer(customer)}
+                      <Link
+                        href={`/panel/uzytkownicy/${customer.id}`}
                         className="button button--primary button--small"
-                        style={{ fontSize: "0.8rem", padding: "5px 12px", cursor: "pointer" }}
+                        style={{ fontSize: "0.8rem", padding: "5px 12px" }}
                       >
                         Edytuj
-                      </button>
+                      </Link>
                     </div>
                   </td>
                 </tr>
@@ -116,15 +111,6 @@ export function UsersTableClient({
           </div>
         )}
       </div>
-
-      {editingCustomer && (
-        <EditCustomerModal
-          customer={editingCustomer}
-          allProjects={allProjects}
-          appUrl={appUrl}
-          onClose={() => setEditingCustomer(null)}
-        />
-      )}
     </>
   );
 }
