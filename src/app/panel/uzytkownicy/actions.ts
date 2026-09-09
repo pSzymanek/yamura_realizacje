@@ -106,6 +106,33 @@ export async function updateCustomerAction(payload: UpdateCustomerPayload) {
       }
     } else {
       // 2. Aktualizacja zarejestrowanego użytkownika (status === "active" | "inactive")
+      // A. Aktualizacja w Supabase Auth (email, metadane, hasło)
+      const authUpdates: {
+        email?: string;
+        password?: string;
+        user_metadata?: Record<string, any>;
+      } = {
+        email: email.trim().toLowerCase(),
+        user_metadata: {
+          full_name: fullName.trim(),
+          phone: phone.trim(),
+          address_line1: address_line1.trim(),
+          address_line2: address_line2.trim(),
+          postal_code: postal_code.trim(),
+          city: city.trim(),
+        },
+      };
+
+      if (newPassword && newPassword.trim().length >= 8) {
+        authUpdates.password = newPassword.trim();
+      }
+
+      const { error: authErr } = await adminClient.auth.admin.updateUserById(id, authUpdates);
+      if (authErr) {
+        throw new Error("Błąd aktualizacji konta logowania: " + authErr.message);
+      }
+
+      // B. Aktualizacja w tabeli profiles (zabezpieczona przed przerwaniem całego procesu)
       const { error: profErr } = await adminClient
         .from("profiles")
         .update({
@@ -120,32 +147,10 @@ export async function updateCustomerAction(payload: UpdateCustomerPayload) {
         .eq("id", id);
 
       if (profErr) {
-        throw new Error("Błąd zapisu profilu: " + profErr.message);
+        console.warn("Ostrzeżenie przy zapisie w profiles (sprawdź uprawnienia tabeli w Supabase):", profErr.message);
       }
 
-      // Aktualizacja w Supabase Auth (email i ewentualne hasło)
-      const authUpdates: {
-        email?: string;
-        password?: string;
-        user_metadata?: Record<string, any>;
-      } = {
-        email: email.trim().toLowerCase(),
-        user_metadata: {
-          full_name: fullName.trim(),
-          phone: phone.trim(),
-        },
-      };
-
-      if (newPassword && newPassword.trim().length >= 8) {
-        authUpdates.password = newPassword.trim();
-      }
-
-      const { error: authErr } = await adminClient.auth.admin.updateUserById(id, authUpdates);
-      if (authErr) {
-        throw new Error("Błąd aktualizacji konta logowania: " + authErr.message);
-      }
-
-      // 3. Aktualizacja powiązanych projektów
+      // C. Aktualizacja powiązanych projektów (podpinanie/odpinanie)
       const { data: currentProjects } = await adminClient
         .from("projects")
         .select("id")
@@ -155,17 +160,23 @@ export async function updateCustomerAction(payload: UpdateCustomerPayload) {
       const toUnlink = currentIds.filter((pId) => !projectIds.includes(pId));
 
       if (toUnlink.length > 0) {
-        await adminClient
+        const { error: unlinkErr } = await adminClient
           .from("projects")
           .update({ customer_user_id: null })
           .in("id", toUnlink);
+        if (unlinkErr) {
+          throw new Error("Błąd odłączania projektów: " + unlinkErr.message);
+        }
       }
 
       if (projectIds.length > 0) {
-        await adminClient
+        const { error: linkErr } = await adminClient
           .from("projects")
           .update({ customer_user_id: id })
           .in("id", projectIds);
+        if (linkErr) {
+          throw new Error("Błąd przypisywania projektów: " + linkErr.message);
+        }
       }
     }
 

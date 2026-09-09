@@ -4171,7 +4171,18 @@ textarea:focus {
   animation: yamuraScaleIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* --- Respect Reduced Motion --- */
+/* --- Toast Notification Entrance --- */
+@keyframes yamuraToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

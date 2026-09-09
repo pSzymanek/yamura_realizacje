@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import type { ProjectListItem } from "@/lib/types";
 import { createInvitation } from "./actions";
+import { toast } from "@/components/ui/toast";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -56,14 +57,17 @@ export function InviteForm({ unassignedProjects }: { unassignedProjects: Project
     if (res.success && res.token) {
       const origin = typeof window !== "undefined" ? window.location.origin : "";
       setSuccessLink(`${origin}/rejestracja/${res.token}`);
+      toast.success("Zaproszenie dla klienta zostało wygenerowane!");
     } else {
       setError(res.error || "Wystąpił nieznany błąd.");
+      toast.error(res.error || "Wystąpił błąd podczas generowania zaproszenia.");
     }
   }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(successLink);
     setCopied(true);
+    toast.success("Link aktywacyjny skopiowany do schowka!");
     setTimeout(() => setCopied(false), 3000);
   };
 

@@ -11,6 +11,7 @@ import {
 } from "../actions";
 import { CopyInviteButton } from "../copy-invite-button";
 import { formatDate } from "@/lib/format";
+import { toast } from "@/components/ui/toast";
 
 export type SimpleProject = {
   id: string;
@@ -82,11 +83,13 @@ export function EditCustomerForm({
 
     if (!email || !email.includes("@")) {
       setError("Podaj poprawny adres e-mail.");
+      toast.error("Podaj poprawny adres e-mail.");
       return;
     }
 
     if (newPassword && newPassword.length < 8) {
       setError("Nowe hasło musi mieć co najmniej 8 znaków.");
+      toast.error("Nowe hasło musi mieć co najmniej 8 znaków.");
       return;
     }
 
@@ -108,15 +111,18 @@ export function EditCustomerForm({
 
       if (res.success) {
         setSuccess("Zmiany zostały pomyślnie zapisane!");
+        toast.success("Zmiany zostały pomyślnie zapisane!");
         router.refresh();
         setTimeout(() => {
           router.push("/panel/uzytkownicy");
         }, 1200);
       } else {
         setError(res.error || "Wystąpił błąd podczas zapisu.");
+        toast.error(res.error || "Wystąpił błąd podczas zapisu.");
       }
     } catch (err: any) {
       setError(err.message || "Błąd zapisu danych.");
+      toast.error(err.message || "Błąd zapisu danych.");
     } finally {
       setIsSaving(false);
     }
@@ -128,14 +134,17 @@ export function EditCustomerForm({
     try {
       const res = await deleteCustomerAction(customer.id, customer.status, email);
       if (res.success) {
+        toast.success("Użytkownik został pomyślnie usunięty.");
         router.push("/panel/uzytkownicy");
         router.refresh();
       } else {
         setError(res.error || "Błąd usuwania użytkownika.");
+        toast.error(res.error || "Błąd usuwania użytkownika.");
         setIsDeleting(false);
       }
     } catch (err: any) {
       setError(err.message || "Błąd usuwania.");
+      toast.error(err.message || "Błąd usuwania.");
       setIsDeleting(false);
     }
   }
@@ -149,11 +158,14 @@ export function EditCustomerForm({
         setInvitationToken(res.token);
         if (res.expires_at) setInvitationExpiresAt(res.expires_at);
         setSuccess("Wygenerowano nowy link aktywacyjny!");
+        toast.success("Wygenerowano nowy link aktywacyjny!");
       } else {
         setError(res.error || "Błąd generowania linku.");
+        toast.error(res.error || "Błąd generowania linku.");
       }
     } catch (err: any) {
       setError(err.message || "Błąd generowania linku.");
+      toast.error(err.message || "Błąd generowania linku.");
     } finally {
       setIsRegenerating(false);
     }

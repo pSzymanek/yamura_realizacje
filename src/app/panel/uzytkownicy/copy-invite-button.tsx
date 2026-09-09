@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { toast } from "@/components/ui/toast";
+
 export function CopyInviteButton({
   token,
   appUrl,
@@ -30,9 +32,10 @@ export function CopyInviteButton({
         document.body.removeChild(input);
       }
       setCopied(true);
+      toast.success("Link aktywacyjny skopiowany do schowka!");
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      // fallback
+      toast.error("Nie udało się skopiować linku do schowka.");
     }
   }
 
