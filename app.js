@@ -1,11 +1,12 @@
 import { createServer } from "node:http";
-import { appendFileSync, mkdirSync } from "node:fs";
+import { appendFileSync, mkdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import next from "next";
 
 const hostname = "0.0.0.0";
 const rawPort = process.env.PORT || process.env.NODE_PORT || "3000";
-const port = Number.parseInt(rawPort, 10);
+const isNumericPort = /^\d+$/.test(String(rawPort).trim());
+const port = isNumericPort ? Number.parseInt(String(rawPort).trim(), 10) : rawPort;
 const logDirectory = join(process.cwd(), "logs");
 const logFile = join(logDirectory, "node-app.log");
 
@@ -35,13 +36,14 @@ function logEvent(level, message, details) {
   }
 }
 
-if (!Number.isInteger(port) || port < 1 || port > 65535) {
+if (isNumericPort && (port < 1 || port > 65535)) {
   console.error("Nieprawidłowy port aplikacji Node.js.");
   process.exit(1);
 }
 
-const dev = process.env.NODE_ENV === "development";
-const app = next({ dev, hostname, port });
+const hasBuild = existsSync(join(process.cwd(), ".next", "BUILD_ID"));
+const dev = process.env.NODE_ENV === "development" && !hasBuild;
+const app = next({ dev, hostname, port: isNumericPort ? port : 3000 });
 const handle = app.getRequestHandler();
 
 async function start() {
@@ -82,12 +84,18 @@ async function start() {
     process.exit(1);
   });
 
-  server.listen(port, hostname, () => {
+  const onListening = () => {
     logEvent(
       "INFO",
-      `YAMURA Dziennik Realizacji uruchomiona: pid=${process.pid}, port=${port}, node=${process.version}.`,
+      `YAMURA Dziennik Realizacji uruchomiona: pid=${process.pid}, port=${port}, node=${process.version}, mode=${dev ? "development" : "production"}.`,
     );
-  });
+  };
+
+  if (isNumericPort) {
+    server.listen(port, hostname, onListening);
+  } else {
+    server.listen(port, onListening);
+  }
 
   let shuttingDown = false;
 
