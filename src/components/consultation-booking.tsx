@@ -1,12 +1,35 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "@/components/ui/toast";
 
-export function ConsultationBooking() {
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [project, setProject] = useState("");
+export interface ConsultationProject {
+  id: string;
+  order_number: string;
+  title: string;
+}
+
+export interface ConsultationBookingProps {
+  initialFullName?: string;
+  initialPhone?: string;
+  initialEmail?: string;
+  projects?: ConsultationProject[];
+}
+
+export function ConsultationBooking({
+  initialFullName = "",
+  initialPhone = "",
+  initialEmail = "",
+  projects = [],
+}: ConsultationBookingProps) {
+  const [fullName, setFullName] = useState(initialFullName);
+  const [phone, setPhone] = useState(initialPhone);
+  const [email, setEmail] = useState(initialEmail);
+  const [project, setProject] = useState(
+    projects.length > 0
+      ? `${projects[0].order_number} · ${projects[0].title}`
+      : "Nowe zapytanie ofertowe (jeszcze bez numeru)",
+  );
   const [notes, setNotes] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -17,6 +40,7 @@ export function ConsultationBooking() {
     setTimeout(() => {
       setIsSending(false);
       setIsSubmitted(true);
+      toast.success("Zgłoszenie na konsultację zostało pomyślnie wysłane!");
     }, 400);
   };
 
@@ -221,10 +245,23 @@ export function ConsultationBooking() {
                     color: "#171717",
                   }}
                 >
-                  <option>YMR/2026/084 · Kuchnia i zabudowa strefy dziennej</option>
-                  <option>YMR/2026/118 · Zabudowa RTV i biblioteka salonu</option>
-                  <option>Nowe zapytanie ofertowe (jeszcze bez numeru)</option>
-                  <option>Inny temat lub konsultacja ogólna</option>
+                  {projects.length > 0 && (
+                    <optgroup label="Twoje przypisane realizacje">
+                      {projects.map((p) => (
+                        <option key={p.id} value={`${p.order_number} · ${p.title}`}>
+                          {p.order_number} · {p.title}
+                        </option>
+                      ))}
+                    </optgroup>
+                  )}
+                  <optgroup label="Pozostałe tematy">
+                    <option value="Nowe zapytanie ofertowe (jeszcze bez numeru)">
+                      Nowe zapytanie ofertowe (jeszcze bez numeru)
+                    </option>
+                    <option value="Inny temat lub konsultacja ogólna">
+                      Inny temat lub konsultacja ogólna
+                    </option>
+                  </optgroup>
                 </select>
               </div>
 
